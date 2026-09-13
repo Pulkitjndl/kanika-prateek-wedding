@@ -47,6 +47,10 @@
     --champagne:      #cbb27f;
     --near-black:     #0c0a08;
 
+    /* one quiet ink canvas shared by every scene */
+    --ink-1:          #16110d;
+    --ink-2:          #0a0705;
+
     --serif-display:  'Cinzel', 'Times New Roman', serif;
     --serif-script:   'Cormorant Garamond', 'Georgia', serif;
     --sans-ui:        'Jost', -apple-system, 'Segoe UI', sans-serif;
@@ -194,7 +198,7 @@
      SCENE 1 — INVITATION SCROLL
      ============================================================ */
   .scene-invitation .scene-bg{
-    background: radial-gradient(80% 60% at 50% 10%, rgba(199,154,61,.14), transparent 60%), linear-gradient(180deg,#1c0f05,#0a0502 75%);
+    background: radial-gradient(80% 60% at 50% 10%, rgba(199,154,61,.16), transparent 60%), linear-gradient(180deg, var(--ink-1), var(--ink-2) 75%);
   }
   .pillar{
     position:absolute; top:6%; bottom:6%; width:18px;
@@ -268,22 +272,35 @@
   .detail dt{ font-size:.63rem; font-weight:500; letter-spacing:.24em; text-transform:uppercase; opacity:.7; margin-bottom:.35em; }
   .detail dd{ margin:0; font-family:var(--serif-script); font-size:1.2rem; font-weight:600; font-variant-numeric:tabular-nums; }
 
-  .act-haldi .scene-bg{ background:radial-gradient(110% 70% at 15% 0%,rgba(242,184,84,.2),transparent 55%), linear-gradient(165deg,#3a2410 0%,var(--marigold-bg) 62%,#1c0f05 100%); }
+  /* One quiet, consistent ink canvas for every act — identity comes
+     from a single soft accent glow and the heading colour, never from
+     a loud full-bleed gradient. Keeps the whole journey feeling like
+     one elegant object rather than five clashing backdrops. */
+  .act-haldi .scene-bg, .act-sangeet .scene-bg, .act-sundowner .scene-bg, .act-reception .scene-bg{
+    background: linear-gradient(180deg, var(--ink-1) 0%, var(--ink-2) 100%);
+  }
+  .act-haldi .scene-bg{ background-image: radial-gradient(58% 50% at 88% 6%, rgba(242,184,84,.16), transparent 70%), linear-gradient(180deg, var(--ink-1) 0%, var(--ink-2) 100%); }
   .act-haldi .act-title, .act-haldi .kicker{ color:var(--marigold-light); }
-  .act-haldi .frame{ border-color:rgba(242,184,84,.55); } .act-haldi .frame-corner{ color:var(--marigold-light); }
+  .act-haldi .frame{ border-color:rgba(233,205,133,.5); } .act-haldi .frame-corner{ color:var(--marigold-light); }
 
-  .act-sangeet .scene-bg{ background:radial-gradient(100% 80% at 85% 10%,rgba(233,205,133,.14),transparent 55%), linear-gradient(155deg, var(--indigo) 0%, var(--emerald) 55%, var(--indigo-deep) 100%); }
+  .act-sangeet .scene-bg{ background-image: radial-gradient(58% 50% at 12% 6%, rgba(12,110,84,.22), transparent 70%), linear-gradient(180deg, var(--ink-1) 0%, var(--ink-2) 100%); }
   .act-sangeet .act-title, .act-sangeet .kicker{ color:var(--gold-light); }
+  .act-sangeet .frame{ border-color:rgba(233,205,133,.5); }
 
-  .act-sundowner .scene-bg{ background:linear-gradient(180deg,var(--dusk-1) 0%,var(--dusk-2) 42%,var(--dusk-3) 78%,var(--dusk-4) 100%); }
-  .act-sundowner .act-title{ color:var(--cream); text-shadow:0 2px 18px rgba(0,0,0,.35); } .act-sundowner .kicker{ color:var(--cream); }
-  .act-sundowner .frame{ border-color:rgba(255,255,255,.6); } .act-sundowner .frame-corner{ color:#fff4de; }
+  .act-sundowner .scene-bg{ background-image: radial-gradient(60% 55% at 88% 8%, rgba(217,118,47,.2), transparent 70%), linear-gradient(180deg, var(--ink-1) 0%, var(--ink-2) 100%); }
+  .act-sundowner .act-title{ color:var(--gold-light); } .act-sundowner .kicker{ color:var(--gold-light); }
+  .act-sundowner .frame{ border-color:rgba(233,205,133,.5); } .act-sundowner .frame-corner{ color:var(--gold-light); }
 
-  .act-reception .scene-bg{ background:linear-gradient(160deg, var(--near-black) 0%, #171310 100%); }
+  .act-reception .scene-bg{ background-image: radial-gradient(60% 55% at 88% 6%, rgba(203,178,127,.16), transparent 70%), linear-gradient(180deg, var(--ink-1) 0%, var(--ink-2) 100%); }
   .act-reception .act-title{ color:var(--champagne); } .act-reception .kicker{ color:var(--champagne); }
-  .act-reception .frame{ border-color:rgba(203,178,127,.6); padding:8px; } .act-reception .frame-corner{ color:var(--champagne); }
+  .act-reception .frame{ border-color:rgba(203,178,127,.55); padding:8px; } .act-reception .frame-corner{ color:var(--champagne); }
   .act-reception .act-grid{ grid-template-columns:1.35fr 1fr; }
   @media (max-width:860px){ .act-reception .act-grid{ grid-template-columns:1fr; } }
+
+  /* Sangeet's source photo is a wide dance-floor shot — zoom and
+     re-centre it on the couple so the frame reads at the same visual
+     scale as the tighter Haldi/Sundowner/Reception portraits. */
+  .act-sangeet .photo-mask img{ transform:scale(1.55); transform-origin:41% 38%; object-position:41% 30%; }
 
   /* ============================================================
      TRANSITION VEILS — full-bleed crossfade layers between acts
@@ -398,7 +415,7 @@
   <section class="scene act-haldi" id="scene-haldi">
     <div class="scene-bg"></div>
     <canvas class="ambient" id="canvas-haldi" aria-hidden="true"></canvas>
-    <div class="veil" id="veil-haldi" style="background:linear-gradient(165deg,#3a2410 0%,var(--marigold-bg) 62%,#1c0f05 100%);"></div>
+    <div class="veil" id="veil-haldi" style="background: radial-gradient(58% 50% at 88% 6%, rgba(242,184,84,.16), transparent 70%), linear-gradient(180deg, var(--ink-1) 0%, var(--ink-2) 100%);"></div>
     <div class="scene-inner wrap act-grid">
       <figure class="act-figure">
         <div class="frame" id="frame-haldi">
@@ -427,7 +444,7 @@
   <section class="scene act-sangeet act-reverse" id="scene-sangeet">
     <div class="scene-bg"></div>
     <canvas class="ambient" id="canvas-sangeet" aria-hidden="true"></canvas>
-    <div class="veil" id="veil-sangeet" style="background:linear-gradient(155deg, var(--indigo) 0%, var(--emerald) 55%, var(--indigo-deep) 100%);"></div>
+    <div class="veil" id="veil-sangeet" style="background: radial-gradient(58% 50% at 12% 6%, rgba(12,110,84,.22), transparent 70%), linear-gradient(180deg, var(--ink-1) 0%, var(--ink-2) 100%);"></div>
     <div class="scene-inner wrap act-grid">
       <figure class="act-figure">
         <div class="frame" id="frame-sangeet">
@@ -456,7 +473,7 @@
   <section class="scene act-sundowner" id="scene-sundowner">
     <div class="scene-bg"></div>
     <canvas class="ambient" id="canvas-sundowner" aria-hidden="true"></canvas>
-    <div class="veil" id="veil-sundowner" style="background:linear-gradient(180deg,var(--dusk-1) 0%,var(--dusk-2) 42%,var(--dusk-3) 78%,var(--dusk-4) 100%);"></div>
+    <div class="veil" id="veil-sundowner" style="background: radial-gradient(60% 55% at 88% 8%, rgba(217,118,47,.2), transparent 70%), linear-gradient(180deg, var(--ink-1) 0%, var(--ink-2) 100%);"></div>
     <div class="scene-inner wrap act-grid">
       <figure class="act-figure">
         <div class="frame" id="frame-sundowner">
