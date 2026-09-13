@@ -88,20 +88,23 @@
      SIDE PROGRESS RAIL
      ============================================================ */
   .rail{
-    position:fixed; right:clamp(10px,2.4vw,30px); top:50%; transform:translateY(-50%);
+    position:fixed; right:calc(clamp(10px,2.4vw,30px) + env(safe-area-inset-right,0px)); top:50%; transform:translateY(-50%);
     z-index:80; display:flex; flex-direction:column; align-items:center; gap:14px;
   }
-  .rail button{ appearance:none; border:none; background:none; padding:6px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .rail button{ appearance:none; border:none; background:none; padding:6px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:transform .3s cubic-bezier(.22,1,.36,1); }
+  .rail button:hover{ transform:scale(1.15); }
   .rail .dot{ width:8px; height:8px; border-radius:50%; border:1.4px solid var(--gold-light); background:transparent; transition:background .3s, transform .3s, box-shadow .3s; }
   .rail button.active .dot{ background:var(--gold-light); transform:scale(1.35); box-shadow:0 0 10px var(--gold-light); }
   .rail button:focus-visible{ outline:2px solid var(--gold-light); outline-offset:4px; border-radius:50%; }
   .rail .rail-label{
     position:absolute; right:26px; font-size:.6rem; letter-spacing:.18em; text-transform:uppercase;
     white-space:nowrap; color:var(--cream); background:rgba(5,6,15,.75); padding:4px 9px;
-    border:1px solid rgba(233,205,133,.35); opacity:0; transform:translateX(6px); transition:opacity .2s, transform .2s;
+    border:1px solid rgba(233,205,133,.35); opacity:0; transform:translateX(6px); transition:opacity .25s ease, transform .25s cubic-bezier(.22,1,.36,1);
   }
   .rail button:hover .rail-label, .rail button:focus-visible .rail-label{ opacity:1; transform:translateX(0); }
   @media (max-width:680px){ .rail{ display:none; } }
+  @media (max-height:480px) and (orientation:landscape){ .rail{ gap:9px; } .rail .rail-label{ display:none; } }
+
 
   /* ============================================================
      PIN SCENES — each is one full-viewport "shot"; JS pins it for
@@ -119,6 +122,16 @@
   /* ---------- reduced-motion safety: show every end-state ---------- */
   body.reduced .scene{ height:auto; min-height:100svh; padding-block:60px; }
 
+  /* ---------- short / landscape viewports: keep everything in frame ---------- */
+  @media (max-height:520px){
+    .scene{ min-height:340px; }
+    .curtain-names .n{ font-size:clamp(2rem,7vh,3.4rem); }
+    .curtain-line{ font-size:clamp(1rem,4vh,1.5rem); }
+    .act-title, .finale-names{ font-size:clamp(1.6rem,6vh,2.6rem) !important; }
+    .curtain-scroll-cue{ bottom:4%; }
+    .wrap{ padding-block:12px; }
+  }
+
   /* ============================================================
      SCENE 0 — CURTAIN
      ============================================================ */
@@ -127,33 +140,43 @@
       radial-gradient(70% 55% at 50% 30%, rgba(0,0,0,.35), transparent 65%),
       linear-gradient(180deg, #0e0303 0%, #050101 60%, #020000 100%);
   }
+  /* .curtain-panel is the GSAP-controlled slider (position + open/close
+     transform). Its fabric TEXTURE sits on a nested, static .curtain-fabric
+     child; the only motion is a smooth, scroll-driven ripple applied to
+     the panel's own clip-path from JS (see the curtain scene's ScrollTrigger) --
+     no idle/looping animation, so it never feels busy or restless. */
   .curtain-panel{
-    position:absolute; top:0; bottom:0; width:53%;
+    position:absolute; top:0; bottom:0; width:53%; overflow:hidden;
     will-change:transform;
-    /* soft rounded pleats: repeating diagonal folds in true curtain reds */
-    background-image:
-      linear-gradient(180deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 10%, rgba(255,255,255,0) 72%, rgba(0,0,0,.4) 100%),
-      repeating-linear-gradient(90deg,
-        #3d0404 0%, #6e0a0a 8%, #9c1414 17%, #c22323 26%, #9c1414 35%, #6e0a0a 44%, #4a0505 50%);
-    background-blend-mode: overlay, normal;
-    background-size: 100% 100%, 64px 100%;
     box-shadow: 0 0 120px rgba(0,0,0,.7) inset, 0 0 60px rgba(0,0,0,.6);
     z-index:3;
   }
-  .curtain-panel::after{
+  .curtain-fabric{
+    position:absolute; inset:0;
+    /* two layered fold scales (broad pleats + fine secondary creases) for
+       a heavier, less uniform, more "real silk" look than one flat repeat */
+    background-image:
+      linear-gradient(180deg, rgba(255,255,255,.24) 0%, rgba(255,255,255,0) 10%, rgba(255,255,255,0) 70%, rgba(0,0,0,.46) 100%),
+      repeating-linear-gradient(90deg, rgba(0,0,0,.28) 0%, transparent 6%, transparent 13%, rgba(0,0,0,.22) 19%, transparent 25%),
+      repeating-linear-gradient(90deg,
+        #380303 0%, #6e0a0a 8%, #9c1414 17%, #c9282a 26%, #9c1414 35%, #6e0a0a 44%, #430404 50%);
+    background-blend-mode: overlay, multiply, normal;
+    background-size: 100% 100%, 27px 100%, 64px 100%;
+  }
+  .curtain-fabric::after{
     content:''; position:absolute; inset:0;
     background-image: radial-gradient(circle, rgba(233,205,133,.32) 1.3px, transparent 1.5px);
     background-size: 34px 34px; opacity:.35; mix-blend-mode:soft-light;
   }
-  .curtain-panel::before{
+  .curtain-fabric::before{
     /* bottom fringe / tassel trim */
     content:''; position:absolute; left:0; right:0; bottom:0; height:16px;
     background-image: radial-gradient(circle, var(--gold-light) 3px, transparent 3.4px);
     background-size: 16px 16px; background-position:8px 4px;
     opacity:.85; filter:drop-shadow(0 2px 2px rgba(0,0,0,.5));
   }
-  .curtain-left{ left:0; background-position:0 0, 0 0; border-right:1px solid rgba(233,205,133,.55); }
-  .curtain-right{ right:0; background-position:0 0, 100% 0; border-left:1px solid rgba(233,205,133,.55); }
+  .curtain-left{ left:0; border-right:1px solid rgba(233,205,133,.55); }
+  .curtain-right{ right:0; border-left:1px solid rgba(233,205,133,.55); }
   body.reduced .curtain-left{ transform:translateX(-102%); }
   body.reduced .curtain-right{ transform:translateX(102%); }
   .curtain-rod{
@@ -166,6 +189,21 @@
     background-image: radial-gradient(circle, rgba(255,255,255,.5) 1.5px, transparent 1.7px);
     background-size: 30px 100%; background-position:center;
   }
+
+  /* ---------- bride & groom, as silhouettes only: no faces, identified
+     purely by dress shape (dupatta+lehenga / turban+sherwani), gliding
+     toward each other as the curtain parts. Sits behind the curtain
+     panels so it's revealed by the opening, not layered on top of it. ---------- */
+  .couple-silhouettes{ position:absolute; inset:0; z-index:2; pointer-events:none; overflow:hidden; }
+  .couple-figure{ position:absolute; bottom:0; width:clamp(64px,9.5vw,108px); opacity:0; filter:drop-shadow(0 8px 18px rgba(0,0,0,.55)); }
+  .couple-figure svg{ display:block; width:100%; height:auto; }
+  .couple-figure .fig-fill{ fill:url(#fig-gradient); }
+  .couple-figure .fig-fold{ stroke:rgba(42,22,8,.28); stroke-width:1.4; stroke-linecap:round; fill:none; }
+  .couple-figure.bride{ left:50%; }
+  .couple-figure.groom{ left:50%; }
+  body.reduced .couple-figure{ opacity:1; }
+  body.reduced .couple-figure.bride{ transform:translate(calc(-100% - 10px), 0); }
+  body.reduced .couple-figure.groom{ transform:translate(10px, 0); }
 
   .curtain-copy{
     position:relative; z-index:5; text-align:center; padding-inline:20px;
@@ -261,8 +299,11 @@
   .photo-mask img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 22%; }
   .photo-sheen{ position:absolute; inset:0; background:linear-gradient(160deg,rgba(255,255,255,.14),transparent 42%); mix-blend-mode:overlay; }
 
-  .act-copy{ opacity:0; transform:translateY(24px); }
-  body.reduced .act-copy{ opacity:1; transform:none; }
+  .act-copy > *{ opacity:0; transform:translateY(18px); }
+  body.reduced .act-copy > *{ opacity:1; transform:none; }
+  .act-figure{ animation:breathe 7.5s ease-in-out infinite; }
+  @keyframes breathe{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.012); } }
+  body.reduced .act-figure{ animation:none; }
   .act-title{
     font-family:var(--serif-display); font-weight:700; text-transform:uppercase; line-height:1.05;
     letter-spacing:.02em; text-wrap:balance; margin:.28em 0 .3em; font-size:clamp(2rem,5.2vw,3.5rem);
@@ -323,10 +364,18 @@
   .flower-row{ position:absolute; top:30px; left:2%; right:2%; display:flex; justify-content:space-between; opacity:0; }
   body.reduced .flower-row{ opacity:1; }
   .flower-row span{ width:9px; height:9px; border-radius:50%; background:var(--marigold-light); box-shadow:0 0 8px var(--marigold); }
-  .mandap-flame{ position:absolute; bottom:6px; left:50%; translate:-50% 0; width:26px; height:38px; border-radius:50% 50% 50% 50% / 62% 62% 38% 38%; background:radial-gradient(circle at 50% 70%, #fff2c8, var(--ember) 55%, transparent 75%); opacity:0; filter:blur(.3px); }
+  .mandap-flame{ position:absolute; bottom:6px; left:50%; translate:-50% 0; width:26px; height:38px; opacity:0; }
   body.reduced .mandap-flame{ opacity:1; }
-  .wedding-copy{ position:relative; z-index:5; opacity:0; }
-  body.reduced .wedding-copy{ opacity:1; }
+  .flame-core{ position:absolute; inset:0; border-radius:50% 50% 50% 50% / 62% 62% 38% 38%; background:radial-gradient(circle at 50% 70%, #fff2c8, var(--ember) 55%, transparent 75%); filter:blur(.3px); animation:flicker 2.6s ease-in-out infinite; transform-origin:50% 90%; }
+  body.reduced .flame-core{ animation:none; }
+  @keyframes flicker{
+    0%,100%{ transform:scaleY(1) scaleX(1) rotate(0deg); opacity:1; }
+    30%{ transform:scaleY(1.08) scaleX(.94) rotate(-1.5deg); opacity:.92; }
+    55%{ transform:scaleY(.95) scaleX(1.05) rotate(1.5deg); opacity:1; }
+    80%{ transform:scaleY(1.05) scaleX(.97) rotate(-1deg); opacity:.95; }
+  }
+  .wedding-copy > *{ opacity:0; transform:translateY(18px); }
+  body.reduced .wedding-copy > *{ opacity:1; transform:none; }
   .wedding-copy .act-title{ color:var(--gold-light); }
   .wedding-copy .kicker{ color:var(--gold-light); }
   .wedding-copy .act-tagline{ margin-inline:auto; }
@@ -344,7 +393,13 @@
   .envelope-card p{ font-family:var(--serif-script); font-style:italic; color:#2a1608; font-size:clamp(.72rem,2.4vw,.92rem); margin:0; }
   .envelope-flap{ position:absolute; top:0; left:0; right:0; height:56%; background:linear-gradient(160deg,#efe0bd,#cdb689); clip-path:polygon(0 0,100% 0,50% 100%); transform-origin:top center; z-index:3; box-shadow:0 6px 16px rgba(0,0,0,.25); }
   body.reduced .envelope-flap{ transform:rotateX(180deg); }
-  .envelope-seal{ position:absolute; top:100%; left:50%; translate:-50% -50%; width:52px; height:52px; border-radius:50%; background:radial-gradient(circle at 35% 30%,var(--gold-light),var(--gold-deep)); display:flex; align-items:center; justify-content:center; font-family:var(--serif-display); color:#2a1608; font-size:1.05rem; z-index:4; box-shadow:0 4px 12px rgba(0,0,0,.4); backface-visibility:hidden; }
+  /* sits as a SIBLING of .envelope-flap (not a child) so the flap's own
+     clip-path (it's a triangle) never slices the round seal down to a
+     sliver — it needs to read as one whole, unbroken wax seal while the
+     envelope is closed. top:56% lines it up with the flap's own tip. */
+  .envelope-seal{ position:absolute; top:56%; left:50%; translate:-50% -50%; width:52px; height:52px; border-radius:50%; background:radial-gradient(circle at 35% 30%,var(--gold-light),var(--gold-deep)); display:flex; align-items:center; justify-content:center; font-family:var(--serif-display); color:#2a1608; font-size:1.05rem; z-index:4; box-shadow:0 4px 12px rgba(0,0,0,.4); backface-visibility:hidden; }
+  .envelope-seal::after{ content:''; position:absolute; inset:-3px; border-radius:50%; box-shadow:0 0 0 0 rgba(233,205,133,.7); pointer-events:none; }
+  body.reduced .envelope-seal{ opacity:0; }
 
   .finale-text{ opacity:0; margin-top:.4em; }
   body.reduced .finale-text{ opacity:1; }
@@ -356,9 +411,11 @@
   .btn{
     font-family:var(--sans-ui); font-size:.76rem; letter-spacing:.16em; text-transform:uppercase;
     padding:.9em 1.8em; border:1px solid var(--gold-light); color:var(--gold-light); text-decoration:none;
-    background:transparent; cursor:pointer; transition:background .25s, color .25s;
+    background:transparent; cursor:pointer; transition:background .3s ease, color .3s ease, transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s ease;
   }
-  .btn:hover, .btn:focus-visible{ background:var(--gold-light); color:#2a1608; }
+  .btn:hover, .btn:focus-visible{ background:var(--gold-light); color:#2a1608; transform:translateY(-3px); box-shadow:0 10px 24px rgba(199,154,61,.35); }
+  .btn:active{ transform:translateY(-1px); transition-duration:.1s; }
+  @media (prefers-reduced-motion: reduce){ .btn:hover, .btn:focus-visible{ transform:none; } }
   .btn.ghost{ border-color:rgba(233,205,133,.5); color:var(--cream); }
   .btn.ghost:hover{ background:rgba(233,205,133,.15); color:var(--cream); }
 
@@ -381,8 +438,40 @@
   <section class="scene scene-curtain" id="scene-curtain">
     <div class="scene-bg"></div>
     <canvas class="ambient" id="canvas-curtain" aria-hidden="true"></canvas>
-    <div class="curtain-panel curtain-left" aria-hidden="true"></div>
-    <div class="curtain-panel curtain-right" aria-hidden="true"></div>
+    <div class="couple-silhouettes" aria-hidden="true">
+      <div class="couple-figure bride" id="silhouette-bride">
+        <svg viewBox="0 0 100 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="fig-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#e9cd85"/>
+              <stop offset="100%" stop-color="#8f6b23"/>
+            </linearGradient>
+          </defs>
+          <path class="fig-fill" d="M50,6 C38,6 29,17 27,29 C25,41 29,53 37,61 L63,61 C71,53 75,41 73,29 C71,17 62,6 50,6 Z"/>
+          <ellipse class="fig-fill" cx="50" cy="26" rx="12" ry="14"/>
+          <path class="fig-fill" d="M37,58 C33,73 33,90 38,104 L62,104 C67,90 67,73 63,58 Z"/>
+          <path class="fig-fill" d="M38,104 C17,133 6,177 4,224 L96,224 C94,177 83,133 62,104 Z"/>
+          <path class="fig-fold" d="M32,140 C26,168 22,196 20,220"/>
+          <path class="fig-fold" d="M68,140 C74,168 78,196 80,220"/>
+          <path class="fig-fold" d="M50,110 L48,222"/>
+        </svg>
+      </div>
+      <div class="couple-figure groom" id="silhouette-groom">
+        <svg viewBox="0 -16 100 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="fig-fill" d="M22,24 C20,8 30,-4 50,-4 C70,-4 80,8 78,24 C77,32 68,37 50,37 C32,37 23,32 22,24 Z"/>
+          <path class="fig-fold" d="M24,14 C36,20 64,20 76,14"/>
+          <path class="fig-fold" d="M23,22 C36,29 64,29 77,22"/>
+          <path class="fig-fill" d="M58,-3 C60,-9 64,-13 68,-16 C67,-10 64,-4 59,3 Z"/>
+          <circle class="fig-fill" cx="58" cy="0" r="3.2"/>
+          <ellipse class="fig-fill" cx="50" cy="27" rx="11" ry="13"/>
+          <path class="fig-fill" d="M26,38 C21,82 19,132 23,172 L77,172 C81,132 79,82 74,38 C66,44 34,44 26,38 Z"/>
+          <path class="fig-fold" d="M50,42 L50,168"/>
+          <path class="fig-fill" d="M37,172 L34,224 L48,224 L50,174 L52,224 L66,224 L63,172 Z"/>
+        </svg>
+      </div>
+    </div>
+    <div class="curtain-panel curtain-left" aria-hidden="true"><div class="curtain-fabric"></div></div>
+    <div class="curtain-panel curtain-right" aria-hidden="true"><div class="curtain-fabric"></div></div>
     <div class="curtain-rod" aria-hidden="true"></div>
     <div class="curtain-copy">
       <p class="curtain-line fade-out" id="curtain-line-1">A new chapter begins&hellip;</p>
@@ -491,7 +580,7 @@
         <p class="act-tagline">Sunset, celebration &amp; forever.</p>
         <dl class="detail-row">
           <div class="detail"><dt>Date</dt><dd>3 December 2026</dd></div>
-          <div class="detail"><dt>Time</dt><dd>5:00 PM onwards</dd></div>
+          <div class="detail"><dt>Time</dt><dd>3:00 PM onwards</dd></div>
           <div class="detail"><dt>Venue</dt><dd>Noor&#8209;Us&#8209;Sabah Palace</dd></div>
         </dl>
       </div>
@@ -512,7 +601,7 @@
           <div class="mandap-pillar p2" id="mandap-p2"></div>
           <div class="mandap-pillar p3" id="mandap-p3"></div>
           <div class="mandap-pillar p4" id="mandap-p4"></div>
-          <div class="mandap-flame" id="mandap-flame"></div>
+          <div class="mandap-flame" id="mandap-flame"><span class="flame-core"></span></div>
         </div>
         <div class="wedding-copy" id="wedding-copy">
           <p class="kicker">Day Two &middot; IV</p>
@@ -565,9 +654,8 @@
         <div class="envelope" id="envelope">
           <div class="envelope-body"></div>
           <div class="envelope-card"><p>Kanika &amp; Prateek &middot; 2&ndash;3 Dec 2026</p></div>
-          <div class="envelope-flap" id="envelope-flap">
-            <div class="envelope-seal">K&amp;P</div>
-          </div>
+          <div class="envelope-flap" id="envelope-flap"></div>
+          <div class="envelope-seal" id="envelope-seal">K&amp;P</div>
         </div>
       </div>
       <div class="finale-text" id="finale-text">
@@ -713,7 +801,7 @@
     scrollToEl = function(el){ lenis.scrollTo(el, { duration:1.2 }); };
   }
 
-  function pin(selector, distanceVh, build){
+  function pin(selector, distanceVh, build, onUpdate){
     var el = document.querySelector(selector);
     if(!el) return;
     var tl = gsap.timeline({
@@ -725,72 +813,113 @@
         scrub: 0.7,
         pin: true,
         anticipatePin: 1,
-        invalidateOnRefresh: true
+        invalidateOnRefresh: true,
+        onUpdate: onUpdate
       }
     });
     build(tl, el);
     return tl;
   }
 
+  /* ---------- curtain silk ripple: a single smooth wave tied directly to
+     scroll progress (not a looping idle animation) -- flat at rest, and
+     rippling in from the bottom edge as the guest scrolls through the
+     scene, like heavy silk being drawn back. ---------- */
+  var curtainLeftEl = document.querySelector('.curtain-left');
+  var curtainRightEl = document.querySelector('.curtain-right');
+  function curtainWavePoints(side, progress){
+    var N = 26, amp = 3.2, cycles = 2.2;
+    var pts = [];
+    for(var i=0;i<=N;i++){
+      var t = i/N;
+      var bottomWeight = Math.pow(t, 1.7); // wave is strongest near the hem
+      var wave = Math.sin(t*Math.PI*2*cycles - progress*Math.PI*2.4) * amp * bottomWeight * progress;
+      var x = side === 'left' ? (100 - wave) : wave;
+      pts.push(x.toFixed(2) + '% ' + (t*100).toFixed(2) + '%');
+    }
+    return pts.join(',');
+  }
+  function updateCurtainWave(self){
+    var progress = self.progress;
+    if(curtainLeftEl)  curtainLeftEl.style.clipPath  = 'polygon(0% 0%,'   + curtainWavePoints('left',  progress) + ',0% 100%)';
+    if(curtainRightEl) curtainRightEl.style.clipPath = 'polygon(100% 0%,' + curtainWavePoints('right', progress) + ',100% 100%)';
+  }
+
   var mm = gsap.matchMedia();
 
   mm.add(
-    { isDesktop: '(min-width: 681px)', isMobile: '(max-width: 680px)' },
+    {
+      isDesktop: '(min-width: 1025px)',
+      isTablet:  '(min-width: 681px) and (max-width: 1024px)',
+      isMobile:  '(max-width: 680px)'
+    },
     function(context){
       var short = context.conditions.isMobile;
-      var k = short ? 0.7 : 1;
+      var mid = context.conditions.isTablet;
+      var k = short ? 0.7 : (mid ? 0.85 : 1);
 
       /* ---- Scene 0: curtain opens, name reveals ---- */
       pin('#scene-curtain', 2.2*k, function(tl){
         tl.to('#curtain-line-1', { opacity:0, y:-14, duration:1 }, 0.4);
         tl.to('#curtain-names',  { opacity:1, duration:1.2 }, 0.6);
         tl.to('.curtain-scroll-cue', { opacity:0, duration:.5 }, 0.3);
-        tl.to('.curtain-left',  { xPercent:-104, duration:4, ease:'power2.inOut' }, 2.2);
-        tl.to('.curtain-right', { xPercent:104,  duration:4, ease:'power2.inOut' }, 2.2);
-      });
+        tl.to('.curtain-left',  { xPercent:-104, duration:4, ease:'power3.inOut' }, 2.2);
+        tl.to('.curtain-right', { xPercent:104,  duration:4, ease:'power3.inOut' }, 2.2);
+        /* bride & groom silhouettes glide together as the gap opens.
+           xPercent:-100 anchors the bride by her own right edge (so she
+           sits left-of-center); x then carries the actual walking motion. */
+        gsap.set('#silhouette-bride', { xPercent:-100, x:-74 });
+        gsap.set('#silhouette-groom', { x:96 });
+        tl.to('#silhouette-bride', { opacity:1, x:-10, duration:3.2, ease:'power2.out' }, 2.3);
+        tl.to('#silhouette-groom', { opacity:1, x:10,  duration:3.2, ease:'power2.out' }, 2.3);
+      }, updateCurtainWave);
 
       /* ---- Scene 1: scroll unrolls, text already inside fades with it ---- */
       pin('#scene-invitation', 1.9*k, function(tl){
-        tl.to('#scroll-card', { clipPath:'inset(0% 0% 0% 0% round 2px)', duration:5, ease:'power2.out' }, 0.4);
+        tl.to('#scroll-card', { clipPath:'inset(0% 0% 0% 0% round 2px)', duration:5, ease:'expo.out' }, 0.4);
       });
 
-      /* ---- Acts: frame arrives like a camera settling on it ---- */
+      /* ---- Acts: frame arrives like a camera settling on it, copy reveals word by word ---- */
       [
         ['#scene-haldi', '#frame-haldi', '#copy-haldi', '#veil-haldi'],
         ['#scene-sangeet', '#frame-sangeet', '#copy-sangeet', '#veil-sangeet'],
         ['#scene-sundowner', '#frame-sundowner', '#copy-sundowner', '#veil-sundowner']
       ].forEach(function(set){
         pin(set[0], 1.9*k, function(tl){
-          tl.to(set[3], { opacity:1, duration:2 }, 0);
-          tl.fromTo(set[1], { opacity:0, rotateY:24, scale:.88 }, { opacity:1, rotateY:0, scale:1, duration:3, ease:'power2.out' }, 0.5);
-          tl.fromTo(set[2], { opacity:0, y:24 }, { opacity:1, y:0, duration:2 }, 1.1);
+          tl.to(set[3], { opacity:1, duration:2, ease:'sine.inOut' }, 0);
+          tl.fromTo(set[1], { opacity:0, rotateY:24, scale:.88 }, { opacity:1, rotateY:0, scale:1, duration:3, ease:'expo.out' }, 0.5);
+          tl.fromTo(set[2] + ' > *', { opacity:0, y:22 }, { opacity:1, y:0, duration:1.6, stagger:0.16, ease:'power3.out' }, 1.15);
         });
       });
 
       /* ---- Scene: Wedding — diyas count up, mandap builds, fire ignites ---- */
       pin('#scene-wedding', 2.6*k, function(tl){
         tl.fromTo('#single-diya', { opacity:0 }, { opacity:1, boxShadow:'0 0 26px 10px rgba(255,178,90,.85)', duration:1.6 }, 0);
-        tl.to('#mandap-p1', { opacity:1, scaleY:1, duration:1.4 }, 1.4);
-        tl.to('#mandap-p2', { opacity:1, scaleY:1, duration:1.4 }, 1.7);
-        tl.to('#mandap-p3', { opacity:1, scaleY:1, duration:1.4 }, 2.0);
-        tl.to('#mandap-p4', { opacity:1, scaleY:1, duration:1.4 }, 2.3);
-        tl.to('#mandap-canopy', { opacity:1, y:0, duration:1.4 }, 2.8);
+        tl.to('#mandap-p1', { opacity:1, scaleY:1, duration:1.4, ease:'power2.out' }, 1.4);
+        tl.to('#mandap-p2', { opacity:1, scaleY:1, duration:1.4, ease:'power2.out' }, 1.7);
+        tl.to('#mandap-p3', { opacity:1, scaleY:1, duration:1.4, ease:'power2.out' }, 2.0);
+        tl.to('#mandap-p4', { opacity:1, scaleY:1, duration:1.4, ease:'power2.out' }, 2.3);
+        tl.to('#mandap-canopy', { opacity:1, y:0, duration:1.4, ease:'power2.out' }, 2.8);
         tl.to('#mandap-flowers', { opacity:1, duration:1.2 }, 3.1);
-        tl.to('#mandap-flame', { opacity:1, duration:1, scale:1.15 }, 3.6);
-        tl.to('#wedding-copy', { opacity:1, duration:1.4 }, 4.0);
+        tl.to('#mandap-flame', { opacity:1, duration:1, scale:1.15, ease:'back.out(1.7)' }, 3.6);
+        tl.fromTo('#wedding-copy > *', { opacity:0, y:18 }, { opacity:1, y:0, duration:1.2, stagger:0.15, ease:'power3.out' }, 4.0);
       });
 
       /* ---- Reception: editorial portrait settles in ---- */
       pin('#scene-reception', 1.8*k, function(tl){
-        tl.fromTo('#frame-reception', { opacity:0, scale:.92 }, { opacity:1, scale:1, duration:3, ease:'power2.out' }, 0.4);
-        tl.fromTo('#copy-reception', { opacity:0, y:24 }, { opacity:1, y:0, duration:2 }, 1.2);
+        tl.fromTo('#frame-reception', { opacity:0, scale:.92 }, { opacity:1, scale:1, duration:3, ease:'expo.out' }, 0.4);
+        tl.fromTo('#copy-reception > *', { opacity:0, y:22 }, { opacity:1, y:0, duration:1.6, stagger:0.16, ease:'power3.out' }, 1.2);
       });
 
       /* ---- Finale: envelope opens, message revealed ---- */
       pin('#scene-finale', 2.1*k, function(tl){
-        tl.to('#envelope-flap', { rotateX:180, duration:3, ease:'power2.inOut' }, 0.8);
+        /* wax seal warms, then cracks and lifts away before the flap swings open —
+           a small nod to a real seal breaking rather than just rotating off. */
+        tl.to('#envelope-seal', { scale:1.1, boxShadow:'0 4px 12px rgba(0,0,0,.4), 0 0 26px 6px rgba(233,205,133,.75)', duration:.5, ease:'sine.inOut' }, 0.2);
+        tl.to('#envelope-seal', { y:-10, scale:.82, opacity:0, filter:'blur(3px)', duration:.7, ease:'power2.in' }, 0.75);
+        tl.to('#envelope-flap', { rotateX:180, duration:3, ease:'power3.inOut' }, 0.9);
         tl.to('.envelope-card', { opacity:1, duration:1.2 }, 2.1);
-        tl.to('#finale-text', { opacity:1, duration:1.6 }, 2.6);
+        tl.to('#finale-text', { opacity:1, duration:1.6, ease:'sine.out' }, 2.6);
       });
     }
   );
