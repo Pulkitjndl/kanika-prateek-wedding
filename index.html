@@ -276,7 +276,7 @@
   .act-reverse .act-grid{ grid-template-columns:1fr 1.05fr; }
   .act-reverse .act-figure{ order:2; } .act-reverse .act-copy{ order:1; }
   @media (max-width:860px){
-    .act-grid{ grid-template-columns:1fr; }
+    .act-grid, .act-reverse .act-grid{ grid-template-columns:1fr; }
     .act-reverse .act-figure, .act-reverse .act-copy{ order:initial; }
   }
 
@@ -427,8 +427,8 @@
 <nav class="rail" aria-label="Wedding schedule sections">
   <button data-target="scene-haldi" aria-label="Haldi"><span class="dot"></span><span class="rail-label">Haldi</span></button>
   <button data-target="scene-sangeet" aria-label="Sangeet"><span class="dot"></span><span class="rail-label">Sangeet</span></button>
-  <button data-target="scene-sundowner" aria-label="Sundowner Wedding Carnival"><span class="dot"></span><span class="rail-label">Sundowner</span></button>
   <button data-target="scene-wedding" aria-label="Wedding"><span class="dot"></span><span class="rail-label">Wedding</span></button>
+  <button data-target="scene-sundowner" aria-label="Sundowner Wedding Carnival"><span class="dot"></span><span class="rail-label">Sundowner</span></button>
   <button data-target="scene-reception" aria-label="Reception"><span class="dot"></span><span class="rail-label">Reception</span></button>
 </nav>
 
@@ -558,36 +558,7 @@
     </div>
   </section>
 
-  <!-- ================= SCENE 4 — SUNDOWNER WEDDING CARNIVAL ================= -->
-  <section class="scene act-sundowner" id="scene-sundowner">
-    <div class="scene-bg"></div>
-    <canvas class="ambient" id="canvas-sundowner" aria-hidden="true"></canvas>
-    <div class="veil" id="veil-sundowner" style="background: radial-gradient(60% 55% at 88% 8%, rgba(217,118,47,.2), transparent 70%), linear-gradient(180deg, var(--ink-1) 0%, var(--ink-2) 100%);"></div>
-    <div class="scene-inner wrap act-grid">
-      <figure class="act-figure">
-        <div class="frame" id="frame-sundowner">
-          <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
-          <span class="frame-corner bl"></span><span class="frame-corner br"></span>
-          <div class="photo-mask">
-            <img src="images/sundowner.jpg" alt="Kanika and Prateek at golden hour in front of Noor-Us-Sabah Palace" loading="lazy" width="912" height="1172">
-            <div class="photo-sheen" aria-hidden="true"></div>
-          </div>
-        </div>
-      </figure>
-      <div class="act-copy" id="copy-sundowner">
-        <p class="kicker">Day Two &middot; III</p>
-        <h2 class="act-title">Sundowner Wedding Carnival</h2>
-        <p class="act-tagline">Sunset, celebration &amp; forever.</p>
-        <dl class="detail-row">
-          <div class="detail"><dt>Date</dt><dd>3 December 2026</dd></div>
-          <div class="detail"><dt>Time</dt><dd>3:00 PM onwards</dd></div>
-          <div class="detail"><dt>Venue</dt><dd>Noor&#8209;Us&#8209;Sabah Palace</dd></div>
-        </dl>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= SCENE 5 — WEDDING (mandap + fire) ================= -->
+  <!-- ================= SCENE 4 — WEDDING (mandap + fire) ================= -->
   <section class="scene scene-wedding" id="scene-wedding">
     <div class="scene-bg"></div>
     <canvas class="ambient" id="canvas-wedding-diyas" aria-hidden="true"></canvas>
@@ -604,15 +575,44 @@
           <div class="mandap-flame" id="mandap-flame"><span class="flame-core"></span></div>
         </div>
         <div class="wedding-copy" id="wedding-copy">
-          <p class="kicker">Day Two &middot; IV</p>
+          <p class="kicker">Day Two &middot; III</p>
           <h2 class="act-title">The Wedding</h2>
           <p class="act-tagline">With love, blessings, and the beginning of forever.</p>
           <dl class="detail-row" style="justify-content:center;">
             <div class="detail"><dt>Date</dt><dd>3 December 2026</dd></div>
-            <div class="detail"><dt>Time</dt><dd>7:00 PM onwards</dd></div>
+            <div class="detail"><dt>Time</dt><dd>3:00 PM onwards</dd></div>
             <div class="detail"><dt>Venue</dt><dd>Noor&#8209;Us&#8209;Sabah Palace</dd></div>
           </dl>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SCENE 5 — SUNDOWNER WEDDING CARNIVAL ================= -->
+  <section class="scene act-sundowner" id="scene-sundowner">
+    <div class="scene-bg"></div>
+    <canvas class="ambient" id="canvas-sundowner" aria-hidden="true"></canvas>
+    <div class="veil" id="veil-sundowner" style="background: radial-gradient(60% 55% at 88% 8%, rgba(217,118,47,.2), transparent 70%), linear-gradient(180deg, var(--ink-1) 0%, var(--ink-2) 100%);"></div>
+    <div class="scene-inner wrap act-grid">
+      <figure class="act-figure">
+        <div class="frame" id="frame-sundowner">
+          <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+          <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+          <div class="photo-mask">
+            <img src="images/sundowner.jpg" alt="Kanika and Prateek at golden hour in front of Noor-Us-Sabah Palace" loading="lazy" width="912" height="1172">
+            <div class="photo-sheen" aria-hidden="true"></div>
+          </div>
+        </div>
+      </figure>
+      <div class="act-copy" id="copy-sundowner">
+        <p class="kicker">Day Two &middot; IV</p>
+        <h2 class="act-title">Sundowner Wedding Carnival</h2>
+        <p class="act-tagline">Sunset, celebration &amp; forever.</p>
+        <dl class="detail-row">
+          <div class="detail"><dt>Date</dt><dd>3 December 2026</dd></div>
+          <div class="detail"><dt>Time</dt><dd>3:00 PM onwards</dd></div>
+          <div class="detail"><dt>Venue</dt><dd>Noor&#8209;Us&#8209;Sabah Palace</dd></div>
+        </dl>
       </div>
     </div>
   </section>
@@ -638,7 +638,7 @@
         <p class="act-tagline">Dinner, dancing, and a toast to forever.</p>
         <dl class="detail-row">
           <div class="detail"><dt>Date</dt><dd>3 December 2026</dd></div>
-          <div class="detail"><dt>Time</dt><dd>9:00 PM onwards</dd></div>
+          <div class="detail"><dt>Time</dt><dd>7:00 PM onwards</dd></div>
           <div class="detail"><dt>Venue</dt><dd>Noor&#8209;Us&#8209;Sabah Palace</dd></div>
         </dl>
       </div>
@@ -698,7 +698,7 @@
       if(t){ scrollToEl(t); }
     });
   }
-  var navSections = ['scene-haldi','scene-sangeet','scene-sundowner','scene-wedding','scene-reception']
+  var navSections = ['scene-haldi','scene-sangeet','scene-wedding','scene-sundowner','scene-reception']
     .map(function(id){ return document.getElementById(id); }).filter(Boolean);
   if('IntersectionObserver' in window){
     var railIO = new IntersectionObserver(function(entries){
@@ -794,25 +794,56 @@
   /* ---------- Lenis: buttery inertia-smoothed scrolling, wired into
      GSAP's ticker so ScrollTrigger stays perfectly in sync ---------- */
   if(typeof Lenis !== 'undefined'){
-    var lenis = new Lenis({ duration: 0.85, smoothWheel: true, wheelMultiplier: 1.15, touchMultiplier: 1.6 });
+    var lenis = new Lenis({ duration: 2.4, smoothWheel: true, wheelMultiplier: 0.28, touchMultiplier: 0.42, easing: function(t){ return 1 - Math.pow(1 - t, 3); } });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(function(time){ lenis.raf(time * 1000); });
     gsap.ticker.lagSmoothing(0);
     scrollToEl = function(el){ lenis.scrollTo(el, { duration:1.2 }); };
   }
 
-  function pin(selector, distanceVh, build, onUpdate){
+  /* `distanceVh` is kept only so every call site below still reads the
+     same; it's no longer used to add scroll distance. Nothing is pinned
+     and no extra scroll gesture is ever inserted -- each scene is a
+     normal 100svh block sitting in the ordinary document flow, and its
+     timeline simply scrubs across the exact natural distance the
+     section takes to pass through the viewport. Scrolling always moves
+     the page; it never "sticks" waiting for a further scroll to
+     continue -- one continuous, uninterrupted scroll from top to
+     bottom.
+
+     Every scene except the hero reveals on its way IN: start is the
+     moment its top edge appears at the bottom of the viewport, end is
+     the moment that top edge reaches the very top (i.e. the moment it
+     fully takes over the screen) -- so the reveal finishes exactly as
+     the scene becomes the dominant view, then it simply scrolls on by,
+     fully formed, while the next scene's own entrance plays underneath
+     it. The hero (opts.hero) has nothing above it to arrive from, so it
+     instead reveals across its own exit (top-of-viewport to fully
+     scrolled past), which is why its bride/groom reveal is anchored to
+     the bottom of the frame -- it stays in view for that whole span.
+
+     This window is deliberately kept to exactly one viewport-height:
+     stretching it further (so the choreography "has more room") sounds
+     like it would slow things down, but it doesn't -- it only wastes
+     the first chunk of every reveal off-screen (before the section is
+     even visible) or past it (after the hero has already scrolled
+     away), so the visible motion ends up *less* complete, not slower.
+     The actual, safe way to make the whole experience read as slower
+     without adding lag or dead spots is to change how far a physical
+     scroll gesture moves the page at all -- see the Lenis config just
+     above (duration/wheelMultiplier) -- which keeps this geometry, and
+     therefore the one-continuous-scroll guarantee, untouched. */
+  function pin(selector, distanceVh, build, onUpdate, opts){
     var el = document.querySelector(selector);
     if(!el) return;
+    var hero = opts && opts.hero;
     var tl = gsap.timeline({
       defaults:{ ease:'none' },
       scrollTrigger:{
         trigger: el,
-        start: 'top top',
-        end: function(){ return '+=' + Math.round(window.innerHeight * distanceVh); },
+        start: hero ? 'top top' : 'top bottom',
+        end:   hero ? 'bottom top' : 'top top',
         scrub: 0.7,
-        pin: true,
-        anticipatePin: 1,
         invalidateOnRefresh: true,
         onUpdate: onUpdate
       }
@@ -873,7 +904,7 @@
         gsap.set('#silhouette-groom', { x:96 });
         tl.to('#silhouette-bride', { opacity:1, x:-10, duration:2, ease:'power2.out' }, 1.4);
         tl.to('#silhouette-groom', { opacity:1, x:10,  duration:2, ease:'power2.out' }, 1.4);
-      }, updateCurtainWave);
+      }, updateCurtainWave, { hero:true });
 
       /* ---- Scene 1: scroll unrolls, text already inside fades with it ---- */
       pin('#scene-invitation', 1.55*k, function(tl){
