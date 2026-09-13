@@ -794,7 +794,7 @@
   /* ---------- Lenis: buttery inertia-smoothed scrolling, wired into
      GSAP's ticker so ScrollTrigger stays perfectly in sync ---------- */
   if(typeof Lenis !== 'undefined'){
-    var lenis = new Lenis({ duration: 1.05, smoothWheel: true, wheelMultiplier: 1 });
+    var lenis = new Lenis({ duration: 0.85, smoothWheel: true, wheelMultiplier: 1.15, touchMultiplier: 1.6 });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(function(time){ lenis.raf(time * 1000); });
     gsap.ticker.lagSmoothing(0);
@@ -828,12 +828,13 @@
   var curtainLeftEl = document.querySelector('.curtain-left');
   var curtainRightEl = document.querySelector('.curtain-right');
   function curtainWavePoints(side, progress){
-    var N = 26, amp = 3.2, cycles = 2.2;
+    var N = 26, amp = 3.6, cycles = 2.2;
+    var ramp = Math.sqrt(progress); // wave reads early in the scroll, not just at the very end
     var pts = [];
     for(var i=0;i<=N;i++){
       var t = i/N;
-      var bottomWeight = Math.pow(t, 1.7); // wave is strongest near the hem
-      var wave = Math.sin(t*Math.PI*2*cycles - progress*Math.PI*2.4) * amp * bottomWeight * progress;
+      var bottomWeight = Math.pow(t, 1.7); // wave is strongest near the hem, flat/linear toward the top
+      var wave = Math.sin(t*Math.PI*2*cycles - progress*Math.PI*2.8) * amp * bottomWeight * ramp;
       var x = side === 'left' ? (100 - wave) : wave;
       pts.push(x.toFixed(2) + '% ' + (t*100).toFixed(2) + '%');
     }
@@ -859,23 +860,23 @@
       var k = short ? 0.7 : (mid ? 0.85 : 1);
 
       /* ---- Scene 0: curtain opens, name reveals ---- */
-      pin('#scene-curtain', 2.2*k, function(tl){
-        tl.to('#curtain-line-1', { opacity:0, y:-14, duration:1 }, 0.4);
-        tl.to('#curtain-names',  { opacity:1, duration:1.2 }, 0.6);
-        tl.to('.curtain-scroll-cue', { opacity:0, duration:.5 }, 0.3);
-        tl.to('.curtain-left',  { xPercent:-104, duration:4, ease:'power3.inOut' }, 2.2);
-        tl.to('.curtain-right', { xPercent:104,  duration:4, ease:'power3.inOut' }, 2.2);
+      pin('#scene-curtain', 1.35*k, function(tl){
+        tl.to('#curtain-line-1', { opacity:0, y:-14, duration:.6 }, 0.25);
+        tl.to('#curtain-names',  { opacity:1, duration:.75 }, 0.4);
+        tl.to('.curtain-scroll-cue', { opacity:0, duration:.35 }, 0.2);
+        tl.to('.curtain-left',  { xPercent:-104, duration:2.5, ease:'power3.inOut' }, 1.35);
+        tl.to('.curtain-right', { xPercent:104,  duration:2.5, ease:'power3.inOut' }, 1.35);
         /* bride & groom silhouettes glide together as the gap opens.
            xPercent:-100 anchors the bride by her own right edge (so she
            sits left-of-center); x then carries the actual walking motion. */
         gsap.set('#silhouette-bride', { xPercent:-100, x:-74 });
         gsap.set('#silhouette-groom', { x:96 });
-        tl.to('#silhouette-bride', { opacity:1, x:-10, duration:3.2, ease:'power2.out' }, 2.3);
-        tl.to('#silhouette-groom', { opacity:1, x:10,  duration:3.2, ease:'power2.out' }, 2.3);
+        tl.to('#silhouette-bride', { opacity:1, x:-10, duration:2, ease:'power2.out' }, 1.4);
+        tl.to('#silhouette-groom', { opacity:1, x:10,  duration:2, ease:'power2.out' }, 1.4);
       }, updateCurtainWave);
 
       /* ---- Scene 1: scroll unrolls, text already inside fades with it ---- */
-      pin('#scene-invitation', 1.9*k, function(tl){
+      pin('#scene-invitation', 1.55*k, function(tl){
         tl.to('#scroll-card', { clipPath:'inset(0% 0% 0% 0% round 2px)', duration:5, ease:'expo.out' }, 0.4);
       });
 
@@ -885,7 +886,7 @@
         ['#scene-sangeet', '#frame-sangeet', '#copy-sangeet', '#veil-sangeet'],
         ['#scene-sundowner', '#frame-sundowner', '#copy-sundowner', '#veil-sundowner']
       ].forEach(function(set){
-        pin(set[0], 1.9*k, function(tl){
+        pin(set[0], 1.55*k, function(tl){
           tl.to(set[3], { opacity:1, duration:2, ease:'sine.inOut' }, 0);
           tl.fromTo(set[1], { opacity:0, rotateY:24, scale:.88 }, { opacity:1, rotateY:0, scale:1, duration:3, ease:'expo.out' }, 0.5);
           tl.fromTo(set[2] + ' > *', { opacity:0, y:22 }, { opacity:1, y:0, duration:1.6, stagger:0.16, ease:'power3.out' }, 1.15);
@@ -893,7 +894,7 @@
       });
 
       /* ---- Scene: Wedding — diyas count up, mandap builds, fire ignites ---- */
-      pin('#scene-wedding', 2.6*k, function(tl){
+      pin('#scene-wedding', 2.15*k, function(tl){
         tl.fromTo('#single-diya', { opacity:0 }, { opacity:1, boxShadow:'0 0 26px 10px rgba(255,178,90,.85)', duration:1.6 }, 0);
         tl.to('#mandap-p1', { opacity:1, scaleY:1, duration:1.4, ease:'power2.out' }, 1.4);
         tl.to('#mandap-p2', { opacity:1, scaleY:1, duration:1.4, ease:'power2.out' }, 1.7);
@@ -906,13 +907,13 @@
       });
 
       /* ---- Reception: editorial portrait settles in ---- */
-      pin('#scene-reception', 1.8*k, function(tl){
+      pin('#scene-reception', 1.5*k, function(tl){
         tl.fromTo('#frame-reception', { opacity:0, scale:.92 }, { opacity:1, scale:1, duration:3, ease:'expo.out' }, 0.4);
         tl.fromTo('#copy-reception > *', { opacity:0, y:22 }, { opacity:1, y:0, duration:1.6, stagger:0.16, ease:'power3.out' }, 1.2);
       });
 
       /* ---- Finale: envelope opens, message revealed ---- */
-      pin('#scene-finale', 2.1*k, function(tl){
+      pin('#scene-finale', 1.75*k, function(tl){
         /* wax seal warms, then cracks and lifts away before the flap swings open —
            a small nod to a real seal breaking rather than just rotating off. */
         tl.to('#envelope-seal', { scale:1.1, boxShadow:'0 4px 12px rgba(0,0,0,.4), 0 0 26px 6px rgba(233,205,133,.75)', duration:.5, ease:'sine.inOut' }, 0.2);
