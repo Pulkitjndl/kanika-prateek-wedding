@@ -202,6 +202,8 @@
     display:flex; flex-direction:column; align-items:center; gap:.5em; z-index:6;
   }
   body.reduced .curtain-scroll-cue{ display:none; }
+  .scene-curtain.tap-to-open{ cursor:pointer; }
+  .curtain-scroll-cue .cue-label{ white-space:nowrap; }
   .curtain-scroll-cue svg{ animation:bob 2.2s ease-in-out infinite; }
   @keyframes bob{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
   @media (prefers-reduced-motion: reduce){ .curtain-scroll-cue svg{ animation:none; } }
@@ -250,6 +252,61 @@
   .scroll-card .sc-body{ font-family:var(--serif-script); font-style:italic; font-size:clamp(1.35rem,3.2vw,2.1rem); line-height:1.35; max-width:26ch; margin:0 auto 1.3em; opacity:.92; text-wrap:balance; }
   .scroll-card .sc-date{ font-family:var(--serif-display); letter-spacing:.18em; font-size:clamp(1rem,2.2vw,1.45rem); margin:0 0 .6em; font-variant-numeric:lining-nums; }
   .scroll-card .sc-venue{ font-size:clamp(.78rem,1.4vw,.95rem); letter-spacing:.16em; text-transform:uppercase; opacity:.85; margin:0; }
+
+  /* ============================================================
+     INVITATION CARD — Ganesh ji at the crown, florals and bells at
+     the corners, brass diyas below, the mandap at the foot.
+     Every ornament is inline SVG in the site's gold / sage / blush.
+     ============================================================ */
+  .inv-card{ padding:clamp(14px,3svh,40px) clamp(26px,8vw,120px) clamp(10px,2svh,22px); justify-content:center; overflow:hidden;
+    background:
+      radial-gradient(60% 40% at 50% 14%, rgba(233,205,133,.28), transparent 70%),
+      radial-gradient(120% 90% at 50% 0%, #fcf7ea 0%, #f5ecd5 55%, #ebdcb6 100%); }
+  .inv-deco{ position:absolute; inset:0; pointer-events:none; z-index:0; }
+  .inv-content{ position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; width:100%; }
+  .inv-floral{ position:absolute; width:clamp(112px,24vw,300px); height:auto; aspect-ratio:240/260; opacity:.96; }
+  .inv-floral.tl{ top:0; left:0; }
+  .inv-floral.tr{ top:0; right:0; transform:scaleX(-1); }
+  .inv-floral.bl{ bottom:0; left:0; transform:scaleY(-1); }
+  .inv-floral.br{ bottom:0; right:0; transform:scale(-1,-1); }
+  .inv-bells{ position:absolute; top:0; width:clamp(20px,3.6vw,44px); height:auto; aspect-ratio:60/150; transform-origin:50% 0; animation:inv-sway 5.5s ease-in-out infinite alternate; }
+  .inv-bells.l{ left:clamp(70px,15vw,190px); }
+  .inv-bells.r{ right:clamp(70px,15vw,190px); transform:scaleX(-1); animation-delay:-2.7s; }
+  @keyframes inv-sway{ from{ rotate:-2.2deg; } to{ rotate:2.2deg; } }
+  .inv-deepam{ position:absolute; bottom:clamp(14px,3svh,34px); width:clamp(26px,4.2vw,52px); height:auto; aspect-ratio:60/130; }
+  .inv-deepam.l{ left:clamp(56px,13vw,170px); } .inv-deepam.r{ right:clamp(56px,13vw,170px); }
+  .inv-flicker{ transform-box:fill-box; transform-origin:50% 100%; animation:inv-flicker 1.6s ease-in-out infinite alternate; }
+  @keyframes inv-flicker{ 0%{ transform:scale(1,1); opacity:.95; } 50%{ transform:scale(.92,1.06); opacity:1; } 100%{ transform:scale(1.04,.95); opacity:.9; } }
+  @media (prefers-reduced-motion: reduce){ .inv-bells, .inv-flicker{ animation:none; } }
+
+  .inv-top{ display:flex; align-items:center; justify-content:center; gap:clamp(14px,4vw,48px); }
+  .inv-ganesha{ width:clamp(84px,min(18vw,15.5svh),150px); height:auto; aspect-ratio:200/210; display:block; }
+  .inv-om{ font-family:'Noto Serif Devanagari','Mangal','Kohinoor Devanagari',serif; font-size:clamp(1.3rem,min(3.4vw,3.6svh),2.2rem); color:#a47c2c; line-height:1; }
+  .inv-mantra{ font-family:'Noto Serif Devanagari','Mangal','Kohinoor Devanagari',serif; font-size:clamp(.82rem,min(1.6vw,1.9svh),1.05rem); color:#8a3b24; letter-spacing:.06em; margin:.35em 0 .35em; }
+  .inv-card .sc-rule{ margin:0 0 clamp(8px,1.6svh,16px); }
+  .inv-card .sc-eyebrow{ margin:0 0 clamp(6px,1.4svh,14px); color:#3e2a12; opacity:.85; }
+  .inv-card .sc-couple{ margin:0 0 clamp(6px,1.4svh,14px); }
+  .inv-card .sc-names{ font-family:var(--serif-display); font-style:normal; font-weight:600; letter-spacing:.12em; text-transform:uppercase;
+    font-size:clamp(1.8rem,min(6.2vw,5.9svh),3.5rem); line-height:1.05; color:#3a2a14; }
+  .inv-card .sc-parents{ font-size:clamp(.88rem,min(1.8vw,2.1svh),1.15rem); color:#4a3418; }
+  .inv-card .sc-with{ display:flex; align-items:center; gap:12px; color:#9b4a32; font-size:clamp(1.15rem,min(2.6vw,3svh),1.6rem); margin:.3em 0; }
+  .inv-sprig{ width:clamp(42px,6vw,70px); height:auto; aspect-ratio:70/14; transform:scaleX(-1); }
+  .inv-sprig.flip{ transform:none; }
+  .inv-card .sc-body{ font-size:clamp(1.05rem,min(2.6vw,2.9svh),1.6rem); max-width:min(46ch,100%); line-height:1.3; margin:0 auto clamp(8px,1.6svh,16px); color:#3e2a12; }
+  .inv-date{ display:flex; align-items:center; justify-content:center; gap:clamp(10px,2vw,20px); margin:0 0 clamp(6px,1.2svh,12px) !important; letter-spacing:.16em !important; }
+  .inv-date span{ font-size:clamp(.7rem,1.3vw,.85rem); letter-spacing:.24em; text-transform:uppercase; color:#3e2a12;
+    border-top:1px solid rgba(143,107,35,.55); border-bottom:1px solid rgba(143,107,35,.55); padding:.45em .9em; }
+  .inv-date strong{ font-family:var(--serif-display); font-weight:600; font-size:clamp(1.5rem,min(3.6vw,4svh),2.4rem); color:#8a3b24; letter-spacing:.06em; }
+  .inv-card .sc-venue{ font-family:var(--serif-display); font-size:clamp(.9rem,min(1.9vw,2.2svh),1.2rem); letter-spacing:.14em; color:#8a3b24; opacity:1; }
+  .inv-city{ font-size:clamp(.66rem,1.2vw,.8rem); letter-spacing:.3em; text-transform:uppercase; margin:.35em 0 0; color:#3e2a12; opacity:.8; }
+  .inv-mandap{ width:clamp(136px,min(28vw,22svh),260px); height:auto; aspect-ratio:260/160; margin-top:clamp(4px,1svh,12px); display:block; }
+  @media (max-width:680px){
+    .inv-card{ padding-inline:clamp(30px,10vw,44px); }
+    .inv-card .sc-parents{ max-width:24ch; }
+    .inv-date span{ padding:.4em .55em; letter-spacing:.18em; }
+    .inv-bells.l{ left:64px; } .inv-bells.r{ right:64px; }
+    .inv-deepam.l{ left:10px; bottom:42px; } .inv-deepam.r{ right:10px; bottom:42px; }
+  }
 
   /* ============================================================
      SHARED PHOTOGRAPHIC ACT (Haldi / Sangeet / Sundowner / Reception)
@@ -532,8 +589,8 @@
       <p class="curtain-line fade-out" id="curtain-line-1">A new chapter begins&hellip;</p>
       <div class="curtain-names" id="curtain-names"><p class="n">Kanika &amp; Prateek</p></div>
     </div>
-    <a href="#scene-invitation" class="curtain-scroll-cue" aria-label="Scroll to begin">
-      Scroll to begin
+    <a href="#scene-invitation" class="curtain-scroll-cue" id="gate-open-cue" aria-label="Open the gates">
+      <span class="cue-label">Scroll or tap to open</span>
       <svg width="16" height="20" viewBox="0 0 16 20" fill="none" aria-hidden="true"><path d="M8 1v16.5M8 17.5 1.5 11M8 17.5 14.5 11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
   </section>
@@ -545,23 +602,268 @@
     <div class="pillar left" aria-hidden="true"></div>
     <div class="pillar right" aria-hidden="true"></div>
     <div class="scene-inner wrap">
-      <div class="scroll-card" id="scroll-card">
-        <p class="sc-eyebrow">With the blessings of our families</p>
-        <div class="sc-couple">
-          <div class="sc-person">
-            <p class="sc-names">Kanika</p>
-            <p class="sc-parents">D/o Smt. Arti Khillan &amp; Shri Ashish Khillan</p>
-          </div>
-          <p class="sc-with">with</p>
-          <div class="sc-person">
-            <p class="sc-names">Prateek</p>
-            <p class="sc-parents">S/o Smt. Naresh Bala &amp; Shri Ajay Kumar Jindal</p>
-          </div>
+      <div class="scroll-card inv-card" id="scroll-card">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="inv-gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c9a24a"/><stop offset=".55" stop-color="#a47c2c"/><stop offset="1" stop-color="#7d5a1c"/>
+    </linearGradient>
+    <linearGradient id="inv-brass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0d58c"/><stop offset=".5" stop-color="#c79a3d"/><stop offset="1" stop-color="#8f6b23"/>
+    </linearGradient>
+    <radialGradient id="inv-flame" cx=".5" cy=".7" r=".6">
+      <stop offset="0" stop-color="#fff4c2"/><stop offset=".45" stop-color="#f6b440"/><stop offset="1" stop-color="#d9662c"/>
+    </radialGradient>
+    <radialGradient id="inv-petal" cx=".5" cy=".85" r=".9">
+      <stop offset="0" stop-color="#f6d9d2"/><stop offset=".7" stop-color="#e7aea3"/><stop offset="1" stop-color="#cf8a80"/>
+    </radialGradient>
+    <linearGradient id="inv-leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a9b796"/><stop offset="1" stop-color="#6f8461"/>
+    </linearGradient>
+
+    <!-- ================= GANESHA (line art) ================= -->
+    <symbol id="inv-ganesha" viewBox="0 0 200 210">
+      <g fill="none" stroke="url(#inv-gold)" stroke-linecap="round" stroke-linejoin="round">
+        <!-- halo -->
+        <circle cx="100" cy="92" r="84" stroke-width=".8" opacity=".55"/>
+        <circle cx="100" cy="92" r="78" stroke-width=".6" stroke-dasharray="1.2 4" opacity=".7"/>
+        <g stroke-width=".7" opacity=".45">
+          <path d="M100 4v8M100 172v8M12 92h8M180 92h8M37.8 29.8l5.6 5.6M156.6 148.6l5.6 5.6M37.8 154.2l5.6-5.6M156.6 35.4l5.6-5.6"/>
+          <path d="M66 12.8l3 7.4M134 12.8l-3 7.4M20.8 58l7.4 3M179.2 58l-7.4 3"/>
+        </g>
+        <!-- crown (mukut) -->
+        <path stroke-width="1.6" d="M83 55 L86 40 Q100 35 114 40 L117 55"/>
+        <path stroke-width="1.4" d="M88 40 L91 28 Q100 24 109 28 L112 40"/>
+        <path stroke-width="1.3" d="M93 28 Q96 17 100 12 Q104 17 107 28"/>
+        <circle cx="100" cy="9" r="2.2" stroke-width="1.2"/>
+        <path stroke-width="1" d="M84 50 Q100 46 116 50M90 34 Q100 31 110 34M94 23h12"/>
+        <circle cx="100" cy="44" r="2.4" stroke-width="1"/>
+        <!-- ears -->
+        <path stroke-width="1.6" d="M83 58 C64 48 49 60 52 80 C55 98 70 103 83 90"/>
+        <path stroke-width="1" d="M80 64 C66 58 58 66 60 80 C62 90 70 93 78 87" opacity=".75"/>
+        <path stroke-width="1.6" d="M117 58 C136 48 151 60 148 80 C145 98 130 103 117 90"/>
+        <path stroke-width="1" d="M120 64 C134 58 142 66 140 80 C138 90 130 93 122 87" opacity=".75"/>
+        <!-- head -->
+        <path stroke-width="1.6" d="M83 56 C79 66 80 77 87 84"/>
+        <path stroke-width="1.6" d="M117 56 C121 66 120 77 113 84"/>
+        <!-- tilak + eyes -->
+        <path stroke-width="1.3" d="M100 56v6"/><circle cx="100" cy="64.5" r="1.1" fill="#a47c2c" stroke="none"/>
+        <path stroke-width="1.2" d="M88 68 Q92 65 96 68 Q92 70 88 68Z"/>
+        <path stroke-width="1.2" d="M104 68 Q108 65 112 68 Q108 70 104 68Z"/>
+        <!-- trunk, curling to the side -->
+        <path stroke-width="1.7" d="M94 72 C92 90 95 103 105 110 C113 115 121 110 119 102 C118 98 113 98 113 102"/>
+        <path stroke-width="1.5" d="M106 72 C105 86 107 96 112 100"/>
+        <path stroke-width=".8" d="M95 80h9M95 86h9M96 92h9M98 98h8" opacity=".6"/>
+        <!-- tusk -->
+        <path stroke-width="1.6" d="M89 84 L83 92"/>
+        <!-- necklace -->
+        <path stroke-width="1.2" d="M84 94 Q100 108 116 94"/>
+        <path stroke-width="1" d="M86 99 Q100 114 114 99" opacity=".8"/>
+        <circle cx="100" cy="109" r="2.2" stroke-width="1"/>
+        <!-- shoulders + belly -->
+        <path stroke-width="1.6" d="M84 96 C76 99 73 108 77 117 C68 134 76 154 100 157 C124 154 132 134 123 117 C127 108 124 99 116 96"/>
+        <path stroke-width=".9" d="M91 138 Q100 143 109 138" opacity=".7"/>
+        <circle cx="100" cy="133" r="1.3" stroke-width=".9"/>
+        <path stroke-width="1" d="M80 116 Q100 122 120 116" opacity=".55"/>
+        <!-- upper arms: axe (left) and noose (right), rising outside the ears -->
+        <path stroke-width="3.4" d="M78 104 C66 106 54 108 46 100 C42 96 42 90 44 86"/>
+        <circle cx="44.5" cy="84" r="2.6" stroke-width="1.1"/>
+        <path stroke-width="1.4" d="M44 84 L38 56"/>
+        <path stroke-width="1.3" fill="rgba(233,205,133,.35)" d="M33 60 Q34 48 42 52 Q40 56 39.6 62 Z"/>
+        <path stroke-width="3.4" d="M122 104 C134 106 146 108 154 100 C158 96 158 90 156 86"/>
+        <circle cx="155.5" cy="84" r="2.6" stroke-width="1.1"/>
+        <path stroke-width="1.3" d="M156 82 C150 74 152 64 160 62 C168 62 170 72 164 78 C161 81 158 82 156 82Z"/>
+        <path stroke-width="1" d="M160 80 Q166 88 162 96"/>
+        <!-- lower arms: modak (left), blessing hand (right) -->
+        <path stroke-width="3.4" d="M78 118 C66 124 60 134 66 142 C70 147 76 147 80 144"/>
+        <path stroke-width="1.3" fill="rgba(233,205,133,.35)" d="M78 146 Q84 134 90 146 Q84 151 78 146Z"/>
+        <path stroke-width=".9" d="M84 139v5"/>
+        <path stroke-width="3.4" d="M122 118 C134 122 142 124 144 114"/>
+        <path stroke-width="1.4" fill="rgba(233,205,133,.25)" d="M139 114 C138 106 139 98 141 96 C142 95 143 96 143 98 L143 106 L144 96 C144.5 94 146.5 94 147 96 L147 106 L148.5 98 C149 96.5 151 96.5 151 98.5 L150 108 C152 105 154 105 154 107 C153 112 150 116 146 117 C142 118 139.5 117 139 114Z"/>
+        <!-- crossed legs -->
+        <path stroke-width="1.6" d="M74 150 C58 156 60 170 80 172 C92 173 108 173 120 172 C140 170 142 156 126 150"/>
+        <path stroke-width="1.1" d="M76 164 Q100 174 124 164" opacity=".75"/>
+        <ellipse cx="88" cy="166" rx="6.5" ry="3.2" stroke-width="1.2"/>
+        <ellipse cx="112" cy="166" rx="6.5" ry="3.2" stroke-width="1.2"/>
+        <!-- lotus seat -->
+        <path stroke-width="1.3" d="M100 194 Q92 184 100 175 Q108 184 100 194Z"/>
+        <path stroke-width="1.2" d="M98 191 Q80 186 74 172 Q90 172 99 186"/>
+        <path stroke-width="1.2" d="M102 191 Q120 186 126 172 Q110 172 101 186"/>
+        <path stroke-width="1.1" d="M93 191 Q66 192 52 178 Q70 172 90 184"/>
+        <path stroke-width="1.1" d="M107 191 Q134 192 148 178 Q130 172 110 184"/>
+        <path stroke-width="1.1" d="M58 194 Q100 202 142 194"/>
+        <path stroke-width=".8" d="M70 199 Q100 205 130 199" opacity=".6"/>
+      </g>
+    </symbol>
+
+    <!-- ================= MANDAP ================= -->
+    <symbol id="inv-mandap" viewBox="0 0 260 160">
+      <g stroke="url(#inv-gold)" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <!-- dome / chhatri -->
+        <path stroke-width="1.4" fill="#fbf3e2" d="M62 46 Q130 0 198 46 Z"/>
+        <path stroke-width="1" d="M80 40 Q130 10 180 40" opacity=".6"/>
+        <path stroke-width="1.3" d="M130 12 V4"/><circle cx="130" cy="3" r="2" stroke-width="1" fill="#e9cd85"/>
+        <!-- canopy band + scallops -->
+        <path stroke-width="1.4" fill="#f6ecd6" d="M54 46 H206 V54 H54 Z"/>
+        <path stroke-width="1" d="M58 54 q6 7 12 0 q6 7 12 0 q6 7 12 0 q6 7 12 0 q6 7 12 0 q6 7 12 0 q6 7 12 0 q6 7 12 0 q6 7 12 0 q6 7 12 0 q6 7 12 0 q6 7 12 0 q6 7 12 0"/>
+        <!-- pillars -->
+        <g stroke-width="1.3" fill="#fbf5e9">
+          <path d="M60 54 h10 v84 h-10z"/><path d="M190 54 h10 v84 h-10z"/>
+          <path d="M88 58 h6 v78 h-6z" opacity=".75"/><path d="M166 58 h6 v78 h-6z" opacity=".75"/>
+        </g>
+        <path stroke-width=".9" d="M60 64h10M60 128h10M190 64h10M190 128h10" opacity=".8"/>
+        <!-- drapes -->
+        <path stroke-width="1" fill="rgba(239,214,205,.55)" d="M70 56 C84 80 80 108 72 136 L70 136 Z"/>
+        <path stroke-width="1" fill="rgba(239,214,205,.55)" d="M190 56 C176 80 180 108 188 136 L190 136 Z"/>
+        <path stroke-width=".9" d="M70 56 Q130 92 190 56" opacity=".55"/>
+        <!-- base steps -->
+        <path stroke-width="1.3" fill="#f3e8cc" d="M46 138 H214 V145 H46 Z"/>
+        <path stroke-width="1.2" fill="#ece0c0" d="M36 145 H224 V152 H36 Z"/>
+        <!-- havan kund + sacred fire -->
+        <path stroke-width="1.2" fill="#e9cd85" d="M114 138 L118 128 H142 L146 138 Z"/>
+      </g>
+      <path fill="url(#inv-flame)" d="M130 127 C121 120 124 110 130 100 C131 108 137 109 136 102 C143 112 140 122 130 127Z"/>
+      <path fill="#fff4c2" opacity=".85" d="M130 126 C126 122 127 116 130 111 C133 116 134 122 130 126Z"/>
+      <!-- marigold garlands -->
+      <g fill="#e8973a">
+        <circle cx="74" cy="58" r="2.4"/><circle cx="82" cy="63" r="2.4"/><circle cx="91" cy="67" r="2.4"/><circle cx="100" cy="70" r="2.4"/><circle cx="110" cy="72" r="2.4"/><circle cx="120" cy="73" r="2.4"/><circle cx="130" cy="73.4" r="2.4"/><circle cx="140" cy="73" r="2.4"/><circle cx="150" cy="72" r="2.4"/><circle cx="160" cy="70" r="2.4"/><circle cx="169" cy="67" r="2.4"/><circle cx="178" cy="63" r="2.4"/><circle cx="186" cy="58" r="2.4"/>
+        <circle cx="65" cy="62" r="2.1"/><circle cx="65" cy="69" r="2.1"/><circle cx="65" cy="76" r="2.1"/><circle cx="195" cy="62" r="2.1"/><circle cx="195" cy="69" r="2.1"/><circle cx="195" cy="76" r="2.1"/>
+      </g>
+      <g fill="#f2c25a"><circle cx="78" cy="61" r="1.6"/><circle cx="105" cy="71" r="1.6"/><circle cx="125" cy="73.3" r="1.6"/><circle cx="145" cy="72.6" r="1.6"/><circle cx="173" cy="65" r="1.6"/><circle cx="96" cy="69" r="1.6"/><circle cx="155" cy="71" r="1.6"/><circle cx="164" cy="68.6" r="1.6"/><circle cx="87" cy="65.4" r="1.6"/><circle cx="135" cy="73.4" r="1.6"/><circle cx="115" cy="72.6" r="1.6"/><circle cx="182" cy="61" r="1.6"/></g>
+      <!-- scattered rose petals on the steps -->
+      <g fill="#cf7f78" opacity=".8">
+        <ellipse cx="96" cy="148" rx="3" ry="1.4" transform="rotate(-20 96 148)"/><ellipse cx="160" cy="149" rx="3" ry="1.4" transform="rotate(25 160 149)"/>
+        <ellipse cx="108" cy="150" rx="2.4" ry="1.2"/><ellipse cx="150" cy="147.5" rx="2.4" ry="1.2" transform="rotate(-30 150 147.5)"/>
+        <ellipse cx="82" cy="149.5" rx="2.6" ry="1.2" transform="rotate(15 82 149.5)"/><ellipse cx="176" cy="150" rx="2.6" ry="1.2" transform="rotate(-10 176 150)"/>
+      </g>
+      <!-- small diyas either side of the mandap -->
+      <g>
+        <path fill="url(#inv-brass)" d="M14 152 Q24 160 34 152 Z"/><path fill="url(#inv-flame)" d="M24 151 C20 147 22 143 24 139 C26 143 28 147 24 151Z"/>
+        <path fill="url(#inv-brass)" d="M226 152 Q236 160 246 152 Z"/><path fill="url(#inv-flame)" d="M236 151 C232 147 234 143 236 139 C238 143 240 147 236 151Z"/>
+      </g>
+    </symbol>
+
+    <!-- ================= CORNER FLORAL ================= -->
+    <symbol id="inv-floral" viewBox="0 0 240 260">
+      <!-- vines -->
+      <g fill="none" stroke="#7d8f6c" stroke-linecap="round">
+        <path stroke-width="1.6" d="M0 18 C60 22 110 40 150 86 C170 110 182 140 186 176"/>
+        <path stroke-width="1.3" d="M18 0 C24 60 30 110 46 160 C54 186 62 214 66 252"/>
+        <path stroke-width="1" d="M88 34 C104 18 126 14 146 18" opacity=".8"/>
+      </g>
+      <!-- leaves -->
+      <g fill="url(#inv-leaf)">
+        <path d="M44 22 C52 6 74 6 80 14 C70 22 56 26 44 22Z"/>
+        <path d="M70 30 C86 22 104 30 104 40 C92 42 78 40 70 30Z"/>
+        <path d="M112 52 C112 34 130 26 138 30 C136 44 124 52 112 52Z"/>
+        <path d="M134 84 C148 72 166 78 168 86 C156 92 142 92 134 84Z"/>
+        <path d="M152 112 C152 96 168 88 176 92 C174 106 162 114 152 112Z"/>
+        <path d="M168 146 C182 136 196 144 196 152 C184 156 174 154 168 146Z"/>
+        <path d="M22 44 C6 50 4 70 12 76 C20 66 24 56 22 44Z"/>
+        <path d="M30 82 C46 88 50 106 44 112 C34 104 30 94 30 82Z"/>
+        <path d="M38 122 C22 128 20 146 28 152 C36 142 40 132 38 122Z"/>
+        <path d="M48 168 C64 172 70 190 64 196 C54 188 48 178 48 168Z"/>
+        <path d="M56 214 C40 220 38 238 46 244 C54 234 58 224 56 214Z"/>
+        <path d="M120 16 C130 4 146 6 150 12 C140 18 130 20 120 16Z" opacity=".85"/>
+      </g>
+      <g fill="none" stroke="#5f7352" stroke-width=".6" opacity=".6">
+        <path d="M46 21 Q62 14 78 14M72 31 Q88 32 102 39M114 50 Q124 40 136 31M136 84 Q152 82 166 86"/>
+      </g>
+      <!-- blush roses -->
+      <g transform="translate(26 24)">
+        <circle r="17" fill="url(#inv-petal)"/>
+        <path fill="none" stroke="#b9746b" stroke-width="1" d="M-9 -2 Q0 -14 9 -2 Q4 8 -4 6 Q-8 0 -2 -4 Q4 -4 3 2" opacity=".85"/>
+        <path fill="none" stroke="#c98b81" stroke-width=".8" d="M-15 4 Q-10 14 0 15 Q10 14 15 4" opacity=".7"/>
+      </g>
+      <g transform="translate(98 44) scale(.72)">
+        <circle r="17" fill="url(#inv-petal)"/>
+        <path fill="none" stroke="#b9746b" stroke-width="1.2" d="M-9 -2 Q0 -14 9 -2 Q4 8 -4 6 Q-8 0 -2 -4 Q4 -4 3 2" opacity=".85"/>
+      </g>
+      <!-- lotus -->
+      <g transform="translate(40 112)">
+        <path fill="#f3cfc6" d="M0 10 C-6 0 -4 -12 0 -18 C4 -12 6 0 0 10Z"/>
+        <path fill="#ecb9ae" d="M0 10 C-12 6 -18 -4 -16 -12 C-8 -8 -2 0 0 10Z"/>
+        <path fill="#ecb9ae" d="M0 10 C12 6 18 -4 16 -12 C8 -8 2 0 0 10Z"/>
+        <path fill="#e4a99d" d="M0 10 C-14 12 -24 6 -26 -2 C-16 -2 -6 4 0 10Z"/>
+        <path fill="#e4a99d" d="M0 10 C14 12 24 6 26 -2 C16 -2 6 4 0 10Z"/>
+      </g>
+      <!-- small white blossoms + buds -->
+      <g fill="#fbf4e6" stroke="#d8c39a" stroke-width=".6">
+        <g transform="translate(150 60)"><circle cx="0" cy="-4" r="3.6"/><circle cx="3.8" cy="-1.2" r="3.6"/><circle cx="2.4" cy="3.4" r="3.6"/><circle cx="-2.4" cy="3.4" r="3.6"/><circle cx="-3.8" cy="-1.2" r="3.6"/></g>
+        <g transform="translate(176 124) scale(.8)"><circle cx="0" cy="-4" r="3.6"/><circle cx="3.8" cy="-1.2" r="3.6"/><circle cx="2.4" cy="3.4" r="3.6"/><circle cx="-2.4" cy="3.4" r="3.6"/><circle cx="-3.8" cy="-1.2" r="3.6"/></g>
+        <g transform="translate(28 66) scale(.75)"><circle cx="0" cy="-4" r="3.6"/><circle cx="3.8" cy="-1.2" r="3.6"/><circle cx="2.4" cy="3.4" r="3.6"/><circle cx="-2.4" cy="3.4" r="3.6"/><circle cx="-3.8" cy="-1.2" r="3.6"/></g>
+        <g transform="translate(58 178) scale(.8)"><circle cx="0" cy="-4" r="3.6"/><circle cx="3.8" cy="-1.2" r="3.6"/><circle cx="2.4" cy="3.4" r="3.6"/><circle cx="-2.4" cy="3.4" r="3.6"/><circle cx="-3.8" cy="-1.2" r="3.6"/></g>
+      </g>
+      <g fill="#e8c26a"><circle cx="150" cy="60" r="1.6"/><circle cx="176" cy="124" r="1.3"/><circle cx="28" cy="66" r="1.2"/><circle cx="58" cy="178" r="1.3"/></g>
+      <g fill="#e6a99f"><circle cx="186" cy="178" r="3.2"/><circle cx="66" cy="250" r="3"/><circle cx="148" cy="17" r="2.6"/></g>
+    </symbol>
+
+    <!-- ================= HANGING BELLS ================= -->
+    <symbol id="inv-bells" viewBox="0 0 60 150">
+      <g stroke="#a47c2c" stroke-width=".9" fill="none"><path d="M16 0 V92"/><path d="M42 0 V58"/></g>
+      <g fill="#c79a3d"><circle cx="16" cy="26" r="1.6"/><circle cx="16" cy="48" r="1.6"/><circle cx="16" cy="70" r="1.6"/><circle cx="42" cy="22" r="1.6"/><circle cx="42" cy="40" r="1.6"/></g>
+      <g>
+        <path fill="url(#inv-brass)" d="M16 92 C9 92 7 100 6 110 H26 C25 100 23 92 16 92Z"/><rect x="5" y="109" width="22" height="3" rx="1.5" fill="#8f6b23"/><circle cx="16" cy="115" r="2.2" fill="#8f6b23"/>
+        <path fill="url(#inv-brass)" d="M42 58 C36.5 58 35 64.5 34 72 H50 C49 64.5 47.5 58 42 58Z"/><rect x="33" y="71" width="18" height="2.6" rx="1.3" fill="#8f6b23"/><circle cx="42" cy="76.5" r="1.8" fill="#8f6b23"/>
+      </g>
+    </symbol>
+
+    <!-- ================= BRASS DIYA ON STAND ================= -->
+    <symbol id="inv-deepam" viewBox="0 0 60 130">
+      <path class="inv-flicker" fill="url(#inv-flame)" d="M30 26 C22 18 25 8 30 0 C35 8 38 18 30 26Z"/>
+      <g fill="url(#inv-brass)">
+        <path d="M14 26 Q30 38 46 26 Z"/>
+        <rect x="27" y="33" width="6" height="58" rx="2"/>
+        <ellipse cx="30" cy="48" rx="7" ry="3"/><ellipse cx="30" cy="70" rx="6" ry="2.6"/>
+        <path d="M16 104 Q30 88 44 104 Z"/>
+        <rect x="12" y="104" width="36" height="5" rx="2.5"/>
+      </g>
+    </symbol>
+
+    <symbol id="inv-sprig" viewBox="0 0 70 14">
+      <path d="M2 7 H62" stroke="#a47c2c" stroke-width=".8" fill="none"/>
+      <g fill="url(#inv-leaf)"><path d="M14 7 C18 1 26 1 28 3 C24 7 18 8 14 7Z"/><path d="M14 7 C18 13 26 13 28 11 C24 7 18 6 14 7Z"/><path d="M34 7 C38 2 44 2 46 4 C43 7 38 8 34 7Z"/><path d="M34 7 C38 12 44 12 46 10 C43 7 38 6 34 7Z"/></g>
+      <circle cx="64" cy="7" r="2" fill="#c79a3d"/>
+    </symbol>
+  </defs>
+</svg>
+
+        <div class="inv-deco" aria-hidden="true">
+          <svg class="inv-floral tl"><use href="#inv-floral"/></svg>
+          <svg class="inv-floral tr"><use href="#inv-floral"/></svg>
+          <svg class="inv-floral bl"><use href="#inv-floral"/></svg>
+          <svg class="inv-floral br"><use href="#inv-floral"/></svg>
+          <svg class="inv-bells l"><use href="#inv-bells"/></svg>
+          <svg class="inv-bells r"><use href="#inv-bells"/></svg>
+          <svg class="inv-deepam l"><use href="#inv-deepam"/></svg>
+          <svg class="inv-deepam r"><use href="#inv-deepam"/></svg>
         </div>
-        <div class="sc-rule" aria-hidden="true"><span></span></div>
-        <p class="sc-body">invite you to celebrate their journey of love, laughter and forever.</p>
-        <p class="sc-date">2 &ndash; 3 December 2026</p>
-        <p class="sc-venue">Noor&#8209;Us&#8209;Sabah Palace &middot; Bhopal</p>
+        <div class="inv-content">
+          <div class="inv-top">
+            <span class="inv-om" aria-hidden="true">&#x0950;</span>
+            <svg class="inv-ganesha" role="img" aria-label="Shri Ganesh"><use href="#inv-ganesha"/></svg>
+            <span class="inv-om" aria-hidden="true">&#x0950;</span>
+          </div>
+          <p class="inv-mantra" lang="sa">&#x0965; &#x0936;&#x094D;&#x0930;&#x0940; &#x0917;&#x0923;&#x0947;&#x0936;&#x093E;&#x092F; &#x0928;&#x092E;&#x0903; &#x0965;</p>
+          <div class="sc-rule" aria-hidden="true"><span></span></div>
+          <p class="sc-eyebrow">With the blessings of our families</p>
+          <div class="sc-couple">
+            <div class="sc-person">
+              <p class="sc-names">Kanika</p>
+              <p class="sc-parents">D/o Smt. Arti Khillan &amp; Shri Ashish Khillan</p>
+            </div>
+            <p class="sc-with"><svg class="inv-sprig" aria-hidden="true"><use href="#inv-sprig"/></svg>with<svg class="inv-sprig flip" aria-hidden="true"><use href="#inv-sprig"/></svg></p>
+            <div class="sc-person">
+              <p class="sc-names">Prateek</p>
+              <p class="sc-parents">S/o Smt. Naresh Bala &amp; Shri Ajay Kumar Jindal</p>
+            </div>
+          </div>
+          <p class="sc-body">invite you to celebrate their journey of love, laughter and forever.</p>
+          <p class="sc-date inv-date" aria-label="2 to 3 December 2026"><span>December</span><strong>2 &ndash; 3</strong><span>2026</span></p>
+          <p class="sc-venue">Noor&#8209;Us&#8209;Sabah Palace</p>
+          <p class="inv-city">Bhopal</p>
+          <svg class="inv-mandap" aria-hidden="true"><use href="#inv-mandap"/></svg>
+        </div>
       </div>
     </div>
   </section>
@@ -1011,6 +1313,7 @@
     return tl;
   }
 
+  var gateTl = null;   /* the hero's scroll-driven gate timeline (set below) */
   var mm = gsap.matchMedia();
 
   mm.add(
@@ -1027,7 +1330,7 @@
       /* ---- Scene 0: the palace gate swings open, the camera passes
          through it, and the palace keeps drawing closer with every scroll ---- */
       var gateHold = short ? 1.1 : 1.4;
-      pin('#scene-curtain', 1.35*k, function(tl){
+      gateTl = pin('#scene-curtain', 1.35*k, function(tl){
         tl.to('.curtain-scroll-cue', { opacity:0, duration:.3 }, 0);
         tl.to('#curtain-line-1', { opacity:0, y:-14, duration:.5 }, 0.15);
         tl.to('#gate-left',  { rotateY:84, duration:2.3, ease:'power2.inOut' }, 0.1);
@@ -1103,6 +1406,49 @@
 
     }
   );
+
+
+  /* ---------- optional tap / click to open the gates ----------
+     Scrolling still opens the gates exactly as before. A tap or click
+     on the closed gate simply glides the page down to the point where
+     the doors are fully open, so the very same scroll animation plays
+     -- both ways look identical. */
+  (function(){
+    var section = document.getElementById('scene-curtain');
+    var cue = document.getElementById('gate-open-cue');
+    if(!section) return;
+    var gliding = false;
+    if(cue && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches){
+      var lbl = cue.querySelector('.cue-label'); if(lbl){ lbl.textContent = 'Scroll or click to open'; }
+    }
+    function openPoint(){
+      return (gateTl && gateTl.scrollTrigger) ? gateTl.scrollTrigger.end : Math.round(window.innerHeight*1.4);
+    }
+    function isClosed(){ return window.scrollY < openPoint() - 4; }
+    function sync(){ section.classList.toggle('tap-to-open', isClosed()); }
+    function openGates(e){
+      if(!isClosed()) return;              /* already open: let normal links work */
+      if(e){ e.preventDefault(); }
+      if(gliding) return;
+      gliding = true;
+      var target = openPoint();
+      var dist = Math.max(0, target - window.scrollY);
+      var dur = Math.min(3.2, Math.max(1.4, 3.2 * dist / Math.max(1, target)));
+      var done = function(){ gliding = false; sync(); };
+      if(typeof lenis !== 'undefined' && lenis){
+        lenis.scrollTo(target, { duration:dur, easing:function(t){ return t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3)/2; }, onComplete:done });
+      }else{
+        window.scrollTo({ top:target, behavior:'smooth' }); setTimeout(done, 1600);
+      }
+    }
+    section.addEventListener('click', function(e){
+      var a = e.target.closest && e.target.closest('a');
+      if(a && a !== cue) return;          /* any other link keeps its own behaviour */
+      openGates(e);
+    });
+    window.addEventListener('scroll', sync, { passive:true });
+    sync();
+  })();
 
   window.addEventListener('load', function(){ ScrollTrigger.refresh(); });
 })();
